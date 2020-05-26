@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://combatants/Combatant.tscn" type="PackedScene" id=1]
+[ext_resource path="res://battle/Battle.gd" type="Script" id=2]
+[ext_resource path="res://battle/Tracks.tscn" type="PackedScene" id=3]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Tracks" parent="." instance=ExtResource( 3 )]
+position = Vector2( 192, 65 )
+length = 190
+gap = 30
+
+[node name="CombatantLeft" parent="." instance=ExtResource( 1 )]
+position = Vector2( 56, 64 )
+
+[node name="CombatantRight" parent="." instance=ExtResource( 1 )]
+position = Vector2( 326, 64 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+margin_right = 384.0
+margin_bottom = 128.0
+border_color = Color( 1, 0, 1, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+[connection signal="action_hit" from="Tracks" to="." method="_on_Tracks_action_hit"]
