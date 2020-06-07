@@ -36,6 +36,7 @@ onready var _start_charging_timer = $StartChargingTimer
 onready var _stance_label = $StanceLabel
 onready var _stance_tooltip = $StanceTooltip
 onready var _shield = $Shield
+onready var _anim = $Sprite/AnimationPlayer
 
 func _ready():
 	_shield.visible = false
@@ -45,8 +46,12 @@ func _process(delta):
 		match _next_state:
 			State.CHANGING_STANCE:
 				_enter_changing_stance()
+			State.PREPARE_STRIKE:
+				_enter_prepare_strike()
 			State.CHARGING_STRIKE:
 				_enter_charging_strike()
+			State.STRIKE:
+				_enter_strike()
 			State.DEFENDING:
 				_enter_defending()
 			State.RECOVERING:
@@ -125,6 +130,9 @@ func _do_changing_stance(delta):
 		Time.restore()
 		_next_state = State.IDLE
 
+func _enter_prepare_strike():
+	_anim.play("prepare")
+
 func _do_prepare_strike(delta):
 	if _start_charging_timer.is_stopped():
 		assert(curr_energy > 0)
@@ -152,6 +160,12 @@ func _do_charging_strike(delta):
 			curr_charge_level_int -= 1
 			
 		_curr_charge_level = min(MAX_CHARGE_LEVEL, _curr_charge_level + _stance.charge_per_second * delta * charge_multiplier)
+
+func _enter_strike():
+	_anim.play("strike")
+
+func _on_strike_anim_finished():
+	_anim.play("idle")
 
 func _do_strike():
 	var attack = Factory.new_attack(self)
