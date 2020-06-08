@@ -36,12 +36,13 @@ onready var _start_charging_timer = $StartChargingTimer
 onready var _stance_label = $StanceLabel
 onready var _stance_tooltip = $StanceTooltip
 onready var _shield = $Shield
-onready var _anim = $Sprite/AnimationPlayer
+onready var _anim = $AnimationPlayer
 
 func _ready():
 	_shield.visible = false
 
 func _process(delta):
+
 	if _state != _next_state:
 		match _next_state:
 			State.CHANGING_STANCE:
@@ -191,12 +192,13 @@ func _do_defending(delta):
 		_next_state = State.IDLE
 		return
 
-	var position = 25
+	var position = 0
 	if Input.is_action_pressed("ui_up"):
 		_defense_level = Enums.Level.UPPER
-		position = -position
+		position = -Constants.LEVEL_GAP
 	elif Input.is_action_pressed("ui_down"):
 		_defense_level = Enums.Level.LOWER
+		position = Constants.LEVEL_GAP
 	else:
 		_defense_level = Enums.Level.MIDDLE
 		position = 0

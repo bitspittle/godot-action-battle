@@ -10,7 +10,6 @@ script = ExtResource( 2 )
 [node name="Tracks" parent="." instance=ExtResource( 3 )]
 position = Vector2( 192, 65 )
 length = 190
-gap = 30
 
 [node name="CombatantLeft" parent="." instance=ExtResource( 1 )]
 position = Vector2( 56, 64 )

@@ -6,9 +6,13 @@
 [node name="Bat" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
-[node name="Sprite" parent="." index="0"]
-self_modulate = Color( 0.27451, 0.235294, 0.235294, 1 )
+[node name="Sprite" parent="Pivot" index="0"]
+self_modulate = Color( 0.486275, 0.305882, 0.305882, 1 )
 scale = Vector2( 0.2, 0.2 )
+
+[node name="BriefTextArea" parent="Pivot" index="1"]
+margin_top = -30.0
+margin_bottom = -14.0
 
 [node name="AttackTimer" type="Timer" parent="." index="2"]
 wait_time = 1.3

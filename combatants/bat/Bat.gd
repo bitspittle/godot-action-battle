@@ -2,15 +2,15 @@ extends Combatant
 
 class_name Bat
 
-const ATTACK_PERIOD = 2.0
+const ATTACK_PERIOD = 5.0
 const ATTACK_VARIATION = 0.5
-const MOVE_PERIOD = 1.5
+const MOVE_PERIOD = 3.5
 const MOVE_VARIATION = 1.0
 
 var TEXTURE_BITE = load("res://assets/images/bite16x16.png")
 
 var _level = Enums.Level.MIDDLE
-onready var _sprite: Sprite = $Sprite
+onready var _pivot: Node2D = $Pivot
 onready var _attack_timer: Timer = $AttackTimer
 onready var _move_timer: Timer = $MoveTimer
 
@@ -32,22 +32,20 @@ func _choose_random_level():
 	while (old_level == _level):
 		_level = Enums.random_level()
 
-	var delta = (_sprite.texture.get_size().y * _sprite.scale.y)
 	var y = 0
-
 	match _level:
 		Enums.Level.UPPER:
-			y = -delta
+			y = -Constants.LEVEL_GAP
 		Enums.Level.LOWER:
-			y = delta
+			y = Constants.LEVEL_GAP
 
 	_target_pos.y = y
 	
 func _physics_process(delta):
-	var distance = _target_pos - _sprite.position
+	var distance = _target_pos - _pivot.position
 	var distance_len2 = distance.length_squared()
 	if (distance_len2 > 0):
-		_sprite.position = _sprite.position.move_toward(_target_pos, (distance_len2) * delta)
+		_pivot.position = _pivot.position.move_toward(_target_pos, (distance_len2) * delta)
 
 func _on_AttackTimer_timeout():
 	var attack = Factory.new_attack(self)
@@ -63,5 +61,7 @@ func _handle_attacked(damage: int, level: int) -> void:
 	if (_level == level):
 		._handle_attacked(damage, level)
 		_on_MoveTimer_timeout() # Force the bat to move now
+	else:
+		._handle_missed()
 
 

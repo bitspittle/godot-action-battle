@@ -4,7 +4,6 @@ extends Node2D
 class_name Tracks
 
 export var length: int = 128 setget _set_length
-export var gap: int = 25 setget _set_gap
 
 signal action_hit(action, side, level)
 
@@ -60,16 +59,12 @@ func _set_length(value: int):
 	length = value
 	_update_tracks()
 	
-func _set_gap(value: int):
-	gap = value
-	_update_tracks()
-	
 func _update_tracks():
 	if not is_inside_tree():
 		return
 		
-	_upper_track.position.y = -gap
-	_lower_track.position.y = gap
+	_upper_track.position.y = -Constants.LEVEL_GAP
+	_lower_track.position.y = -Constants.LEVEL_GAP
 	
 	_upper_track.length = length
 	_middle_track.length = length
@@ -81,8 +76,8 @@ func _update_tracks():
 	var rect_left = _left_area_shape.get_shape()
 	var rect_right = _right_area_shape.get_shape()
 	
-	rect_left.extents.y = gap * 2
-	rect_right.extents.y = gap * 2
+	rect_left.extents.y = Constants.LEVEL_GAP * 2
+	rect_right.extents.y = Constants.LEVEL_GAP * 2
 
 func _action_to_level(action: Action) -> int:
 	if action.position.y == _middle_track.position.y:
